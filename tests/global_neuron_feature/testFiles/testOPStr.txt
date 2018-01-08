@@ -1,0 +1,115 @@
+[./vaa3d]
+[-x]
+[global_neuron_feature]
+[-f]
+[compute_feature]
+[-i]
+[/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/testOutput.ano]
+>>key ... -x 
+call plugin ... global_neuron_feature 
+>>key ... -f 
+call plugin function ... compute_feature 
+>>key ... -i 
+file name ... [ "/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/testOutput.ano" ] 
+Searching in ./plugins ...... 
+Fail instantiation( Cannot load library /home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so: (libopencv_core.so.3.0: cannot open shared object file: No such file or directory) ):  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so" 
+Searching ./plugins done.
+Current canonical path = [global_neuron_feature]
+Searching in ./plugins ...... 
+Fail instantiation( Cannot load library /home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so: (libopencv_core.so.3.0: cannot open shared object file: No such file or directory) ):  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so" 
+Searching ./plugins done.
+plugins
+callPluginFunc fullpath:  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_utilities/global_neuron_feature/libglobal_neuron_feature.so" 
+
+===============Welcome to compute_feature Function===============
+reading a linker file...
+Locating file under the basedir [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles//home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_purk2.CNG.swc]... 
+!!! Did not find the file under the basedir. Re-Locating file using the directly supplied name [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_purk2.CNG.swc]... 
+	--> push a swc file [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_purk2.CNG.swc]
+Locating file under the basedir [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles//home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_moto1.CNG.swc]... 
+!!! Did not find the file under the basedir. Re-Locating file using the directly supplied name [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_moto1.CNG.swc]... 
+	--> push a swc file [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/v_e_moto1.CNG.swc]
+Locating file under the basedir [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles//home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]... 
+!!! Did not find the file under the basedir. Re-Locating file using the directly supplied name [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]... 
+	--> push a swc file [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]
+-------------------------------------------------------
+---------------------read 1521 lines, 1521 remained lines
+-------------------------------------------------------
+---------------------read 562 lines, 562 remained lines
+-------------------------------------------------------
+---------------------read 20 lines, 20 remained lines
+
+--------------Neuron #1----------------
+Number of Nodes:	1521
+Soma Surface:		0
+Number of Stems:	1
+Number of Bifurcatons:	419
+Number of Branches:	839
+Number of Tips:		420
+Overall Width:		292.5
+Overall Height:		251
+Overall Depth:		24.5
+Average Diameter:	1.21598
+Total Length:		8413.2
+Total Surface:		34666.2
+Total Volume:		19128.8
+Max Euclidean Distance:	271.881
+Max Path Distance:			333.539
+Max Branch Order:			25
+Average Contraction:			0.958375
+Average Fragmentation:			0.811681
+Average Parent-daughter Ratio:		0.779739
+Average Bifurcation Angle Local:	80.9247
+Average Bifurcation Angle Remote:	74.1481
+Hausdorff Dimension:			1.79736
+
+--------------Neuron #2----------------
+Number of Nodes:	562
+Soma Surface:		45238.9
+Number of Stems:	12
+Number of Bifurcatons:	123
+Number of Branches:	256
+Number of Tips:		134
+Overall Width:		2588
+Overall Height:		2089
+Overall Depth:		2306
+Average Diameter:	2.61669
+Total Length:		78969.1
+Total Surface:		557656
+Total Volume:		1.74758e+06
+Max Euclidean Distance:	1531.5
+Max Path Distance:			1818
+Max Branch Order:			10
+Average Contraction:			0.949033
+Average Fragmentation:			1.19141
+Average Parent-daughter Ratio:		0.683861
+Average Bifurcation Angle Local:	47.9178
+Average Bifurcation Angle Remote:	46.8366
+Hausdorff Dimension:			1.59569
+
+--------------Neuron #3----------------
+Number of Nodes:	20
+Soma Surface:		45.3646
+Number of Stems:	1
+Number of Bifurcatons:	9
+Number of Branches:	19
+Number of Tips:		10
+Overall Width:		50
+Overall Height:		60
+Overall Depth:		0
+Average Diameter:	1.9
+Total Length:		214.853
+Total Surface:		1349.96
+Total Volume:		674.98
+Max Euclidean Distance:	60.8276
+Max Path Distance:			64.1421
+Max Branch Order:			6
+Average Contraction:			1
+Average Fragmentation:			0
+Average Parent-daughter Ratio:		0.975069
+Average Bifurcation Angle Local:	60
+Average Bifurcation Angle Remote:	60
+Hausdorff Dimension:			-nan
+ **** the plugin preprocessing takes [ 290  milliseconds] 
+Starting Vaa3D version checker...
+http://home.penglab.com/proj/vaa3d/current_release/vaa3d_version.xml
