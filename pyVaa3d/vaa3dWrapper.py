@@ -7,6 +7,7 @@ import pathlib
 import typing
 import pandas as pd
 
+
 def runVaa3dPlugin(inFile: str, pluginName: str,
                    funcName: str, vaa3dExec: str = vaa3d, timeout: int = 30 * 60):
 
