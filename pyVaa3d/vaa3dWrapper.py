@@ -1,12 +1,11 @@
 import subprocess
 import logging
 from .executables import vaa3d
-from .auxFuncs import \
-    log_subprocess_output, isProcessRunning, pkill
+from .auxFuncs import log_subprocess_output
 import pathlib2 as pl
 import typing
 import pandas as pd
-from pkg_resources import resource_filename
+from pyvirtualdisplay import Display
 
 
 def runVaa3dPlugin(inFile: str, pluginName: str,
@@ -14,26 +13,21 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
 
     assert pl.Path(inFile).is_file(), f"Input File {inFile} not found"
 
-    xvfbBashScriptPath = resource_filename(__name__, "startXvfb.sh")
     pluginLabel = f"{pluginName}_{funcName}"
 
-    if not isProcessRunning("Xvfb"):
-        toRun = ["bash", str(xvfbBashScriptPath)]
-        logging.info(f"[starting Xvfb] Running {toRun}")
-        compProc = subprocess.run(toRun, stdout=subprocess.PIPE)
-        log_subprocess_output(compProc.stdout, "starting Xvfb")
+    virtDisplay = Display(visible=False, use_xauth=True, bgcolor="white")
+    virtDisplay.start()
 
     toRun = [
         vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
     ]
     logging.info(f"[{pluginLabel}] Running {toRun}")
-    env = pl.os.environ.copy()
-    env["DISPLAY"] = ":30"
+
     try:
         compProc = subprocess.run(toRun,
                                   timeout=timeout,
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                  env=env)
+                                  )
         log_subprocess_output(compProc.stdout, pluginLabel)
         procOutput = compProc.stdout.decode("utf-8")
     except subprocess.TimeoutExpired as te:
@@ -58,8 +52,7 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
         logging.error(f"{pluginLabel} Subprocess exited with an unknown error!")
         log_subprocess_output(spe.stderr, pluginLabel)
 
-    logging.info(f"[Killing Xvfb]...")
-    pkill("Xvfb")
+    virtDisplay.stop()
     return procOutput
 
 def runEnsembleNeuronTracerv2s(inFile: str) -> str:
