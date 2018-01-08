@@ -9,8 +9,9 @@ setup(
                       "xlrd>=1.0",
                       "openpyxl>=2.4.7",
                       "pathlib2>=2.2.1",
-                      "pillow",
-                      "psutil"],
+                      "pillow>=5.0.0",
+                      "psutil>=5.4.1",
+                      "pyvirtualdisplay>=0.2.1"],
     python_requires=">=3.6",
     package_data={"pyVaa3d": ["bashScripts/*.sh"]}
 )
