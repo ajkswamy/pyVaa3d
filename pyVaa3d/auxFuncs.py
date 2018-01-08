@@ -5,7 +5,6 @@ import logging
 import numpy as np
 from contextlib import contextmanager
 import pandas as pd
-from mbon_feature_analyses.fileNameParsing import MIN2MBONLabel
 import psutil
 import typing
 
@@ -119,14 +118,6 @@ def stripTIFIfPresent(fileName:str) -> str:
         return fileName
 
 
-def parseMembraneAxonDendCorrXL(XLFile: str) -> pd.DataFrame:
-
-    membraneAxonDendCorrDF = pd.read_excel(XLFile)
-    membraneAxonDendCorrDF = membraneAxonDendCorrDF.applymap(stripTIFIfPresent)
-    MBONLabels = membraneAxonDendCorrDF.iloc[:, 0].apply(MIN2MBONLabel)
-    membraneAxonDendCorrDF["MBONLabels"] = MBONLabels
-    membraneAxonDendCorrDF = membraneAxonDendCorrDF.set_index(keys="MBONLabels")
-    return membraneAxonDendCorrDF
 
 def isProcessRunning(procName):
 

@@ -3,19 +3,18 @@ import logging
 from .executables import vaa3d
 from .auxFuncs import \
     log_subprocess_output, isProcessRunning, pkill
-import pathlib
+import pathlib2 as pl
 import typing
 import pandas as pd
+from pkg_resources import resource_filename
 
 
 def runVaa3dPlugin(inFile: str, pluginName: str,
                    funcName: str, vaa3dExec: str = vaa3d, timeout: int = 30 * 60):
 
-    assert pathlib.Path(inFile).is_file(), f"Input File {inFile} not found"
+    assert pl.Path(inFile).is_file(), f"Input File {inFile} not found"
 
-    filePath = pathlib.Path(__file__)
-    # pluginBashScriptPath = filePath.parent / "bashScripts" / "runVaa3dPlugin.sh"
-    xvfbBashScriptPath = filePath.parent / "bashScripts" / "startXvfb.sh"
+    xvfbBashScriptPath = resource_filename(__name__, "startXvfb.sh")
     pluginLabel = f"{pluginName}_{funcName}"
 
     if not isProcessRunning("Xvfb"):
@@ -28,7 +27,7 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
         vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
     ]
     logging.info(f"[{pluginLabel}] Running {toRun}")
-    env = pathlib.os.environ.copy()
+    env = pl.os.environ.copy()
     env["DISPLAY"] = ":30"
     try:
         compProc = subprocess.run(toRun,
@@ -36,29 +35,34 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                   env=env)
         log_subprocess_output(compProc.stdout, pluginLabel)
+        procOutput = compProc.stdout.decode("utf-8")
     except subprocess.TimeoutExpired as te:
         log_subprocess_output(te.stdout, pluginLabel)
+        procOutput = compProc.stdout.decode("utf-8")
         logging.error(f"{pluginLabel} Process did not finish within {timeout} seconds!!!")
         log_subprocess_output(te.stderr, pluginLabel)
     except OSError as ose:
         log_subprocess_output(ose.stdout, pluginLabel)
+        procOutput = compProc.stdout.decode("utf-8")
         logging.error(f"{pluginLabel} OSError while running vaa3d plugin, for example,"
                       f"a file is non existant")
         log_subprocess_output(ose.stderr, pluginLabel)
     except ValueError as ve:
         log_subprocess_output(ve.stdout, pluginLabel)
+        procOutput = compProc.stdout.decode("utf-8")
         logging.error(f"{pluginLabel} Invalid arguments passed to the subprocess")
         log_subprocess_output(ve.stderr, pluginLabel)
     except subprocess.SubprocessError as spe:
         log_subprocess_output(spe.stdout, pluginLabel)
+        procOutput = compProc.stdout.decode("utf-8")
         logging.error(f"{pluginLabel} Subprocess exited with an unknown error!")
         log_subprocess_output(spe.stderr, pluginLabel)
 
     logging.info(f"[Killing Xvfb]...")
     pkill("Xvfb")
+    return procOutput
 
 def runEnsembleNeuronTracerv2s(inFile: str) -> str:
-
 
     runVaa3dPlugin(inFile=inFile, pluginName="EnsembleNeuronTracerV2s",
                    funcName="tracing_func")
@@ -158,7 +162,7 @@ def getNeuronTracingPlugins() -> pd.DataFrame:
 
         pluginNo, pluginLibPathStr = pluginLne.split()
 
-        pluginLibPath = pathlib.Path(pluginLibPathStr)
+        pluginLibPath = pl.Path(pluginLibPathStr)
 
         if pluginLibPath.parts[-3] == "neuron_tracing":
 
@@ -180,11 +184,6 @@ def getNeuronTracingPlugins() -> pd.DataFrame:
     return neuronTracingPlugins
 
 
-def getFromFileVaa3dNTPlugData(vaa3dNTPluginDataFile: pathlib.Path
-                               = vaa3DNeuronTracingPlugins):
 
-    vaa3dNTPluginDF = pd.read_excel(str(vaa3dNTPluginDataFile), index_col=0)
-
-    return vaa3dNTPluginDF
 
 
