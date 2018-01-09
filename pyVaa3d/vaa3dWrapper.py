@@ -1,19 +1,31 @@
-import subprocess
+from __future__ import print_function
+from __future__ import unicode_literals
+from __future__ import division
+from __future__ import absolute_import
+from builtins import zip
+from future import standard_library
+standard_library.install_aliases()
+import sys
+if sys.version_info[0] == 2:
+    import subprocess32 as subprocess
+elif sys.version_info[0] == 3:
+    import subprocess
+else:
+    raise NotImplementedError
 import logging
 from .executables import vaa3d
 from .auxFuncs import log_subprocess_output
 import pathlib2 as pl
-import typing
 import pandas as pd
 from pyvirtualdisplay import Display
 
 
-def runVaa3dPlugin(inFile: str, pluginName: str,
-                   funcName: str, vaa3dExec: str = vaa3d, timeout: int = 30 * 60):
+def runVaa3dPlugin(inFile, pluginName,
+                   funcName, vaa3dExec = vaa3d, timeout = 30 * 60):
 
-    assert pl.Path(inFile).is_file(), f"Input File {inFile} not found"
+    assert pl.Path(inFile).is_file(), "Input File {} not found".format(inFile)
 
-    pluginLabel = f"{pluginName}_{funcName}"
+    pluginLabel = "{}_{}".format(pluginName, funcName)
 
     virtDisplay = Display(visible=False, use_xauth=True, bgcolor="white")
     virtDisplay.start()
@@ -21,7 +33,7 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
     toRun = [
         vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
     ]
-    logging.info(f"[{pluginLabel}] Running {toRun}")
+    logging.info("[{}] Running {}".format(pluginLabel, toRun))
 
     try:
         compProc = subprocess.run(toRun,
@@ -33,43 +45,43 @@ def runVaa3dPlugin(inFile: str, pluginName: str,
     except subprocess.TimeoutExpired as te:
         log_subprocess_output(te.stdout, pluginLabel)
         procOutput = compProc.stdout.decode("utf-8")
-        logging.error(f"{pluginLabel} Process did not finish within {timeout} seconds!!!")
+        logging.error("{} Process did not finish within {} seconds!!!".format(pluginLabel, timeout))
         log_subprocess_output(te.stderr, pluginLabel)
     except OSError as ose:
         log_subprocess_output(ose.stdout, pluginLabel)
         procOutput = compProc.stdout.decode("utf-8")
-        logging.error(f"{pluginLabel} OSError while running vaa3d plugin, for example,"
-                      f"a file is non existant")
+        logging.error("{} OSError while running vaa3d plugin, for example,"
+                      "a file is non existant".format(pluginLabel))
         log_subprocess_output(ose.stderr, pluginLabel)
     except ValueError as ve:
         log_subprocess_output(ve.stdout, pluginLabel)
         procOutput = compProc.stdout.decode("utf-8")
-        logging.error(f"{pluginLabel} Invalid arguments passed to the subprocess")
+        logging.error("{} Invalid arguments passed to the subprocess".format(pluginLabel))
         log_subprocess_output(ve.stderr, pluginLabel)
-    except subprocess.SubprocessError as spe:
+    except subprocess.CalledProcessError as spe:
         log_subprocess_output(spe.stdout, pluginLabel)
         procOutput = compProc.stdout.decode("utf-8")
-        logging.error(f"{pluginLabel} Subprocess exited with an unknown error!")
+        logging.error("{} Subprocess exited with an unknown error!".format(pluginLabel))
         log_subprocess_output(spe.stderr, pluginLabel)
 
     virtDisplay.stop()
     return procOutput
 
-def runEnsembleNeuronTracerv2s(inFile: str) -> str:
+def runEnsembleNeuronTracerv2s(inFile):
 
     runVaa3dPlugin(inFile=inFile, pluginName="EnsembleNeuronTracerV2s",
                    funcName="tracing_func")
 
-    return f"{inFile}_EnsembleNeuronTracerV2s.swc"
+    return "{}_EnsembleNeuronTracerV2s.swc".format(inFile)
 
-def runFastMarching_SpanningTree(inFile: str) -> str:
+def runFastMarching_SpanningTree(inFile):
 
     runVaa3dPlugin(inFile=inFile, pluginName="fastmarching_spanningtree",
                    funcName="tracing_func")
 
-    return f"{inFile}_fastmarching_spanningtree.swc"
+    return "{}_fastmarching_spanningtree.swc".format(inFile)
 
-def getVaa3dHelp() -> str:
+def getVaa3dHelp():
 
     try:
         completedProcess = subprocess.run([vaa3d, '-h'], stdout=subprocess.PIPE)
@@ -82,7 +94,7 @@ def getVaa3dHelp() -> str:
     return completedProcess.stdout.decode("utf-8")
 
 
-def getVaa3dPluginHelp(pluginName) -> str:
+def getVaa3dPluginHelp(pluginName):
 
     try:
         completedProcess = subprocess.run([vaa3d, '-h', '-x', pluginName],
@@ -96,7 +108,7 @@ def getVaa3dPluginHelp(pluginName) -> str:
     return completedProcess.stdout.decode("utf-8")
 
 
-def getVaa3dPluginMenuFuncs(pluginName) -> typing.Tuple[list, list]:
+def getVaa3dPluginMenuFuncs(pluginName):
 
     pluginHelpStr = getVaa3dPluginHelp(pluginName)
 
@@ -115,9 +127,9 @@ def getVaa3dPluginMenuFuncs(pluginName) -> typing.Tuple[list, list]:
             funcsStart = lneInd
 
     if menusStart is None:
-        raise(ValueError(f"No menus found for {pluginName}"))
+        raise(ValueError("No menus found for {}".format(pluginName)))
     if funcsStart is None:
-        raise (ValueError(f"No funcs found for {pluginName}"))
+        raise (ValueError("No funcs found for {}".format(pluginName)))
 
     menus = []
     funcs = []
@@ -136,7 +148,7 @@ def getVaa3dPluginMenuFuncs(pluginName) -> typing.Tuple[list, list]:
 
 
 
-def getNeuronTracingPlugins() -> pd.DataFrame:
+def getNeuronTracingPlugins():
 
     vaa3dHelpStr = getVaa3dHelp()
     vaa3dHelpLines = vaa3dHelpStr.splitlines()

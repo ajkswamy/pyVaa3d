@@ -1,11 +1,18 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import open
+from builtins import range
+from future import standard_library
+standard_library.install_aliases()
 from .vaa3dWrapper import runVaa3dPlugin
-import typing
 import pandas as pd
 from io import StringIO
 import tempfile
 
 
-def writeANOfile(swcList: typing.List[str], outFile: str):
+def writeANOfile(swcList, outFile):
     """
     Writes a list of swc files into an ".ano" file that is essentially path strings of the swc files listed
     one per line.
@@ -14,31 +21,31 @@ def writeANOfile(swcList: typing.List[str], outFile: str):
     :return:
     """
 
-    assert outFile.endswith(".ano"), f"Specified output ANO file {outFile} does not end with '.ano'."
+    assert outFile.endswith(".ano"), "Specified output ANO file {} does not end with '.ano'.".format(outFile)
     swcListWithPrefix = ["SWCFILE=" + x for x in swcList]
     with open(outFile, 'w') as fle:
         fle.write("\n".join(swcListWithPrefix))
 
 
-def readANOFile(inFile: str) -> typing.List[str]:
+def readANOFile(inFile):
     """
     Reads an ".ano" file and
     :param inFile: str, path of the input ANO file, must end with ".ano"
     :return: list of str, list containing the path strings of the swc files in inFile
     """
 
-    assert inFile.endswith(".ano"), f"Specified input ANO file {inFile} does not end with '.ano'."
+    assert inFile.endswith(".ano"), "Specified input ANO file {} does not end with '.ano'.".format(inFile)
     with open(inFile) as fle:
         swcListWithPrefix = fle.read().split("\n")
         swcList = []
         for ind, ent in enumerate(swcListWithPrefix):
             if len(ent) <= 8:
-                raise(ValueError(f"Improper entry {ent} found on line {ind + 1} of {inFile}"))
+                raise(ValueError("Improper entry {} found on line {} of {}".format(ent, ind + 1, inFile)))
             else:
                 swcList.append(ent[8:])
         return swcList
 
-def parseOpStr(opStr: str, inputANOfile: str) -> pd.DataFrame:
+def parseOpStr(opStr, inputANOfile):
 
     """
     Parses the string output of "compute_feature" function of "global_neuron_feature" plugin of Vaa3d
@@ -49,19 +56,22 @@ def parseOpStr(opStr: str, inputANOfile: str) -> pd.DataFrame:
 
     swcList = readANOFile(inputANOfile)
 
-    neuronStartIndicatorBase = f"{''.join(['-'] * 14)}Neuron #"
+    neuronStartIndicatorBase = "{}Neuron #".format(''.join(['-'] * 14))
 
     nNeurons = opStr.count(neuronStartIndicatorBase)
 
-    assert len(swcList) == nNeurons, f"Output not generated for all input SWC files. " \
-                                     f"Output String {opStr[:10]}... contains output for {nNeurons} neurons " \
-                                     f"while the input file {inputANOfile} has {len(swcList)} neurons"
+    assert len(swcList) == nNeurons, "Output not generated for all input SWC files. " \
+                                     "Output String {}... contains output for {} neurons " \
+                                     "while the input file {} has {} neurons".format(opStr[:10],
+                                                                                     nNeurons,
+                                                                                     inputANOfile,
+                                                                                     len(swcList))
 
     allDF = pd.DataFrame()
 
     for swcInd, swc in enumerate(swcList):
         nrnSeries = pd.Series()
-        nrnEntryStartInd = opStr.find(f"{neuronStartIndicatorBase}{swcInd + 1}")
+        nrnEntryStartInd = opStr.find("{}{}".format(neuronStartIndicatorBase, swcInd + 1))
         nrnBuffer = StringIO(opStr[nrnEntryStartInd:])
         nrnBuffer.readline()
 
@@ -77,7 +87,7 @@ def parseOpStr(opStr: str, inputANOfile: str) -> pd.DataFrame:
     return allDF
 
 
-def getGlobalNeuronFeatures(swcList: typing.List[str]):
+def getGlobalNeuronFeatures(swcList):
     """
     Get global neuron features using "compute_feature" function of "global_neuron_feature" plugin of Vaa3d and return
     them in a pandas data frame

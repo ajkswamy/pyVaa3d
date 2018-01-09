@@ -1,15 +1,22 @@
+from __future__ import unicode_literals
+from __future__ import print_function
+from __future__ import division
+from __future__ import absolute_import
+from builtins import range
+from builtins import open
+from future import standard_library
+standard_library.install_aliases()
 from PIL import Image
 from PIL.TiffImagePlugin import TiffImageFile
 import os
 import logging
 import numpy as np
 from contextlib import contextmanager
-import pandas as pd
 import psutil
-import typing
 
 
-def tifStack2ImageSeq(tifFile: str, tiffOutDir: str):
+
+def tifStack2ImageSeq(tifFile, tiffOutDir):
 
     logging.info("[tifStack2ImageSeq] Got Input File: {}\nOutput directory: {}".format(tifFile, tiffOutDir))
     fileName = os.path.split(tifFile)[1]
@@ -37,7 +44,7 @@ def tifStack2ImageSeq(tifFile: str, tiffOutDir: str):
         tif.save(opFile)
 
 # from http://stackoverflow.com/questions/21953835/run-subprocess-and-print-output-to-logging/21978778#21978778
-def log_subprocess_output(pipe: typing.Union[bytes, None], subproc_name: str= '??'):
+def log_subprocess_output(pipe, subproc_name= '??'):
 
     if pipe:
         for line in pipe.split(b"\n"):
@@ -88,7 +95,7 @@ def writeSWC_numpy(fName, swcData, headr=''):
 
 #***********************************************************************************************************************
 
-def shiftSWC(inputSWC: str, xLeft: float, yLeft: float, outputSWC: str):
+def shiftSWC(inputSWC, xLeft, yLeft, outputSWC):
 
     headr, swcData = readSWC_numpy(inputSWC)
 
@@ -102,7 +109,7 @@ def shiftSWC(inputSWC: str, xLeft: float, yLeft: float, outputSWC: str):
 
 @contextmanager
 def cd(newdir):
-    prevdir = os.getcwd()
+    prevdir = os.getcwdu()
     os.chdir(os.path.expanduser(newdir))
     try:
         yield
@@ -110,7 +117,7 @@ def cd(newdir):
         os.chdir(prevdir)
 
 
-def stripTIFIfPresent(fileName:str) -> str:
+def stripTIFIfPresent(fileName):
 
     if fileName.endswith(".tif"):
         return fileName[:-4]
