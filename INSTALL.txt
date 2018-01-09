@@ -1,0 +1,17 @@
+Make environment
+---
+conda create --name pyVaa3d -c conda-forge pandas xlrd openpyxl psutil pillow pyvirtualdisplay
+
+Activate environment
+---
+source activate pyVaa3d
+
+Install package
+---
+pip install <path to package>
+
+Testing
+---
+conda install nose
+cd <path to package>
+nosetests
