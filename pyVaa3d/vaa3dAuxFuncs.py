@@ -12,6 +12,7 @@ elif sys.version_info[0] == 3:
 else:
     raise NotImplementedError
 from builtins import input
+import pandas as pd
 
 
 def checkVaa3dExecutable(vaa3dExec):
@@ -33,6 +34,7 @@ def askForVaa3dExec():
     vaa3dExecutable = \
         input(
             "pyVaa3d cannot find Vaa3D Binary Executable. If you haven't yet, please download and install Vaa3d from "
+            "pyVaa3d cannot find Vaa3d. If you haven't yet, please download and install Vaa3d from "
             "https://github.com/Vaa3D/release and enter the complete path of the file 'start_vaa3d.sh'"
             "(or press q to quit):"
         )
@@ -50,7 +52,9 @@ def getVaa3DExecutable():
                     configDict = json.load(fle)
             except json.decoder.JSONDecodeError:
                 print("Configuration file has been corrupted! Creating new one...")
+
                 configDict = {}
+
 
             if not "vaa3dExecutable" in configDict:
                 vaa3dExec = askForVaa3dExec()
@@ -67,6 +71,7 @@ def getVaa3DExecutable():
             configDict = {"vaa3dExecutable": vaa3dExec}
             with open(linuxConfigFile, 'w') as fle:
                 print("Adding path of Vaa3D Binary Executable to internal config file")
+
                 json.dump(configDict, fle)
 
     else:
