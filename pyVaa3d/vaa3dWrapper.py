@@ -13,18 +13,19 @@ elif sys.version_info[0] == 3:
 else:
     raise NotImplementedError
 import logging
-from .executables import vaa3d
-from .auxFuncs import log_subprocess_output
+from .generalAuxFuncs import log_subprocess_output
+from .vaa3dAuxFuncs import getVaa3DExecutable
 import pathlib2 as pl
 import pandas as pd
 from pyvirtualdisplay import Display
 
 
 def runVaa3dPlugin(inFile, pluginName,
-                   funcName, vaa3dExec = vaa3d, timeout = 30 * 60):
+                   funcName, timeout = 30 * 60):
 
     assert pl.Path(inFile).is_file(), "Input File {} not found".format(inFile)
 
+    vaa3dExec = getVaa3DExecutable()
     pluginLabel = "{}_{}".format(pluginName, funcName)
 
     virtDisplay = Display(visible=False, use_xauth=True, bgcolor="white")
@@ -81,112 +82,6 @@ def runFastMarching_SpanningTree(inFile):
 
     return "{}_fastmarching_spanningtree.swc".format(inFile)
 
-def getVaa3dHelp():
-
-    try:
-        completedProcess = subprocess.run([vaa3d, '-h'], stdout=subprocess.PIPE)
-
-    except subprocess.CalledProcessError as cpe:
-
-        print(cpe.stderr)
-        raise cpe
-
-    return completedProcess.stdout.decode("utf-8")
-
-
-def getVaa3dPluginHelp(pluginName):
-
-    try:
-        completedProcess = subprocess.run([vaa3d, '-h', '-x', pluginName],
-                                          stdout=subprocess.PIPE)
-
-    except subprocess.CalledProcessError as cpe:
-
-        print(cpe.stderr)
-        raise cpe
-
-    return completedProcess.stdout.decode("utf-8")
-
-
-def getVaa3dPluginMenuFuncs(pluginName):
-
-    pluginHelpStr = getVaa3dPluginHelp(pluginName)
-
-    lnes = pluginHelpStr.splitlines()
-
-    menusStart = None
-    funcsStart = None
-    for lneInd, lne in enumerate(lnes):
-
-        if lne.startswith("menu"):
-
-            menusStart = lneInd
-
-        if lne.startswith("func"):
-
-            funcsStart = lneInd
-
-    if menusStart is None:
-        raise(ValueError("No menus found for {}".format(pluginName)))
-    if funcsStart is None:
-        raise (ValueError("No funcs found for {}".format(pluginName)))
-
-    menus = []
-    funcs = []
-
-    for lne in lnes[menusStart: funcsStart]:
-
-        menu = lne[8:]
-        menus.append(menu)
-
-    for lne in lnes[funcsStart:]:
-
-        func = lne[8:]
-        funcs.append(func)
-
-    return menus, funcs
-
-
-
-def getNeuronTracingPlugins():
-
-    vaa3dHelpStr = getVaa3dHelp()
-    vaa3dHelpLines = vaa3dHelpStr.splitlines()
-
-    neuronTracingPlugins = pd.DataFrame()
-
-    for lneInd, lne in enumerate(vaa3dHelpLines):
-
-        if lne.startswith("Found") and lne.endswith("plugins"):
-            pluginStartLineNo = lneInd + 1
-            break
-    else:
-        return neuronTracingPlugins
-
-    for pluginLne in vaa3dHelpLines[pluginStartLineNo:]:
-
-        pluginNo, pluginLibPathStr = pluginLne.split()
-
-        pluginLibPath = pl.Path(pluginLibPathStr)
-
-        if pluginLibPath.parts[-3] == "neuron_tracing":
-
-            pluginName = pluginLibPath.parts[-1][3:-3]
-
-            menus, funcs = getVaa3dPluginMenuFuncs(pluginName)
-
-            for menu, func in zip(menus, funcs):
-
-                dict2Append = {"Plugin Name": pluginName,
-                               "Menu Name": menu,
-                               "Function Name": func}
-                neuronTracingPlugins = neuronTracingPlugins.append(dict2Append,
-                                                                   ignore_index=True)
-
-    neuronTracingPlugins = neuronTracingPlugins.set_index(keys="Plugin Name")
-
-
-    return neuronTracingPlugins
 
 
 
