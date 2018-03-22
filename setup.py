@@ -7,7 +7,8 @@ install_requires = ["pandas>=0.20",
                       "pillow>=5.0.0",
                       "psutil>=5.4.1",
                       "pyvirtualdisplay>=0.2.1",
-                      "future>=0.16.0"]
+                      "future>=0.16.0",
+                      "six>=1.11"]
 if sys.version_info[0] == 2:
     install_requires.append("subprocess32>=3.5.0rc1")
 elif sys.version_info[0] != 3:

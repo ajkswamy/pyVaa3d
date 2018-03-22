@@ -15,7 +15,6 @@ from contextlib import contextmanager
 import psutil
 
 
-
 def tifStack2ImageSeq(tifFile, tiffOutDir):
 
     logging.info("[tifStack2ImageSeq] Got Input File: {}\nOutput directory: {}".format(tifFile, tiffOutDir))
@@ -136,6 +135,7 @@ def isProcessRunning(procName):
             pass
     return False
 
+
 def pkill(procName):
 
     for proc in psutil.process_iter():
@@ -144,3 +144,18 @@ def pkill(procName):
                 proc.kill()
         except psutil.NoSuchProcess:
             pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
