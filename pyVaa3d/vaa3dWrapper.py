@@ -18,6 +18,20 @@ from .vaa3dAuxFuncs import getVaa3DExecutable
 import pathlib2 as pl
 import pandas as pd
 from pyvirtualdisplay import Display
+import platform
+
+
+def startVirtDisplay():
+
+    if platform.system() == "Linux":
+        virtDisplay = Display(visible=False, use_xauth=True, bgcolor="white")
+        virtDisplay.start()
+        return virtDisplay
+
+def stopVirtualDisplay(virtDisplay):
+
+    if platform.system() == "Linux":
+        virtDisplay.stop()
 
 
 def runVaa3dPlugin(inFile, pluginName,
@@ -28,8 +42,7 @@ def runVaa3dPlugin(inFile, pluginName,
     vaa3dExec = getVaa3DExecutable()
     pluginLabel = "{}_{}".format(pluginName, funcName)
 
-    virtDisplay = Display(visible=False, use_xauth=True, bgcolor="white")
-    virtDisplay.start()
+    virtDisplay = startVirtDisplay()
 
     toRun = [
         vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
@@ -65,7 +78,7 @@ def runVaa3dPlugin(inFile, pluginName,
         logging.error("{} Subprocess exited with an unknown error!".format(pluginLabel))
         log_subprocess_output(spe.stderr, pluginLabel)
 
-    virtDisplay.stop()
+    stopVirtualDisplay(virtDisplay)
     return procOutput
 
 def runEnsembleNeuronTracerv2s(inFile):
