@@ -102,3 +102,6 @@ ENV/
 
 # idea
 .idea
+
+# custom
+tests/global_neuron_feature/testFiles/testOutput.ano
