@@ -10,6 +10,7 @@ from .vaa3dWrapper import runVaa3dPlugin
 import pandas as pd
 from io import StringIO
 import tempfile
+import platform
 
 
 def writeANOfile(swcList, outFile):
@@ -74,6 +75,8 @@ def parseOpStr(opStr, inputANOfile):
         nrnEntryStartInd = opStr.find("{}{}".format(neuronStartIndicatorBase, swcInd + 1))
         nrnBuffer = StringIO(opStr[nrnEntryStartInd:])
         nrnBuffer.readline()
+        if platform.system() == "Darwin":
+            nrnBuffer.readline()
 
         for lneInd in range(22):
             lne = nrnBuffer.readline()
