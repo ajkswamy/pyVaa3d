@@ -44,7 +44,7 @@ def askForVaa3dExec():
 
 def getVaa3DExecutable():
 
-    if platform.system() == "Linux":
+    if platform.system() in ["Linux", "Darwin"]:
 
         if os.path.exists(linuxConfigFile):
             try:
