@@ -75,12 +75,12 @@ def parseOpStr(opStr, inputANOfile):
         nrnEntryStartInd = opStr.find("{}{}".format(neuronStartIndicatorBase, swcInd + 1))
         nrnBuffer = StringIO(opStr[nrnEntryStartInd:])
         nrnBuffer.readline()
-        if platform.system() == "Darwin":
-            nrnBuffer.readline()
+        nrnBuffer.readline()
 
         for lneInd in range(22):
-            lne = nrnBuffer.readline()
+            lne = nrnBuffer.readline().rstrip("\n")
             measureName, valueStr = lne.split(":")
+            valueStr = valueStr.replace(",", ".")
             nrnSeries[measureName] = float(valueStr)
             nrnSeries["SWC File"] = swc
         allDF = allDF.append(nrnSeries, ignore_index=True)

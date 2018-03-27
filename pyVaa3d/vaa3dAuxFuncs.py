@@ -33,10 +33,9 @@ def askForVaa3dExec():
 
     vaa3dExecutable = \
         input(
-            "pyVaa3d cannot find Vaa3D Binary Executable. If you haven't yet, please download and install Vaa3d from "
-            "pyVaa3d cannot find Vaa3d. If you haven't yet, please download and install Vaa3d from "
+            "pyVaa3d cannot find Vaa3D Binary Executable. If you haven't yet, please download and install "
+            "Vaa3d Version 3.447 from "
             "https://github.com/Vaa3D/release and enter the complete path of the file 'start_vaa3d.sh'"
-            "(or press q to quit):"
         )
     assert checkVaa3dExecutable(vaa3dExecutable), "The specified vaa3d installation does not exist or" \
                                                   "could not be found"

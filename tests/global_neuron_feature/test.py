@@ -11,7 +11,6 @@ from pyVaa3d.global_neuron_features import writeANOfile, readANOFile, parseOpStr
 import pathlib2 as pl
 from filecmp import cmp
 import pandas as pd
-import platform
 
 
 testFilesPath = pl.Path("tests/global_neuron_feature/testFiles").resolve()
@@ -47,7 +46,7 @@ def test_parseOPStr():
     :return:
     """
 
-    testOpStrFilePath = testFilesPath / "testOPStr_{}.txt".format(platform.system())
+    testOpStrFilePath = testFilesPath / "testOPStr.txt"
     expectedOutFilePath = testFilesPath / "expectedOutput.ano"
     expectedOPXL = testFilesPath / "expectedOutputXL.xlsx"
 
@@ -55,6 +54,8 @@ def test_parseOPStr():
         testOpStr = fle.read()
 
     testOPDF = parseOpStr(opStr=testOpStr, inputANOfile=str(expectedOutFilePath))
+    testOPDF.index = [pl.Path(x).name for x in testOPDF.index]
+    testOPDF.index.name = "SWC File"
     expectedOPDF = pd.read_excel(expectedOPXL, index_col=0, convert_float=False)
 
     pd.util.testing.assert_frame_equal(testOPDF, expectedOPDF)
@@ -76,6 +77,8 @@ def test_getGlobalNeuronFeatures():
     expectedOPXL = testFilesPath / "expectedOutputXL.xlsx"
 
     testOPDF = getGlobalNeuronFeatures(swcFilesFull)
+    testOPDF.index = [pl.Path(x).name for x in testOPDF.index]
+    testOPDF.index.name = "SWC File"
     expectedOPDF = pd.read_excel(expectedOPXL, index_col=0, convert_float=False)
 
     pd.util.testing.assert_frame_equal(testOPDF, expectedOPDF)

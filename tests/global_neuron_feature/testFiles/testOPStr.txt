@@ -5,21 +5,8 @@
 [compute_feature]
 [-i]
 [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/testOutput.ano]
->>key ... -x 
-call plugin ... global_neuron_feature 
->>key ... -f 
-call plugin function ... compute_feature 
->>key ... -i 
-file name ... [ "/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/testOutput.ano" ] 
-Searching in ./plugins ...... 
-Fail instantiation( Cannot load library /home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so: (libopencv_core.so.3.0: cannot open shared object file: No such file or directory) ):  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so" 
-Searching ./plugins done.
 Current canonical path = [global_neuron_feature]
-Searching in ./plugins ...... 
-Fail instantiation( Cannot load library /home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so: (libopencv_core.so.3.0: cannot open shared object file: No such file or directory) ):  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_tracing/LCM_boost/libLCM_boost.so" 
-Searching ./plugins done.
 plugins
-callPluginFunc fullpath:  "/home/aj/Installations/Vaa3D_Ubuntu_64bit_v3.200/plugins/neuron_utilities/global_neuron_feature/libglobal_neuron_feature.so" 
 
 ===============Welcome to compute_feature Function===============
 reading a linker file...
@@ -32,14 +19,15 @@ Locating file under the basedir [/home/aj/repos/pyVaa3d/tests/global_neuron_feat
 Locating file under the basedir [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles//home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]... 
 !!! Did not find the file under the basedir. Re-Locating file using the directly supplied name [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]... 
 	--> push a swc file [/home/aj/repos/pyVaa3d/tests/global_neuron_feature/testFiles/horton-strahler_test_wiki.swc]
--------------------------------------------------------
----------------------read 1521 lines, 1521 remained lines
--------------------------------------------------------
----------------------read 562 lines, 562 remained lines
--------------------------------------------------------
----------------------read 20 lines, 20 remained lines
 
 --------------Neuron #1----------------
+compute Feature  
+N_node : 1521 
+Soma_surface : 0,000000 
+N_stem : 1 
+f0 : 1521,000000 
+f1 : 0,000000 
+f2 : 1,000000 
 Number of Nodes:	1521
 Soma Surface:		0
 Number of Stems:	1
@@ -64,6 +52,13 @@ Average Bifurcation Angle Remote:	74.1481
 Hausdorff Dimension:			1.79736
 
 --------------Neuron #2----------------
+compute Feature  
+N_node : 562 
+Soma_surface : 45238,934212 
+N_stem : 12 
+f0 : 562,000000 
+f1 : 45238,934212 
+f2 : 12,000000 
 Number of Nodes:	562
 Soma Surface:		45238.9
 Number of Stems:	12
@@ -88,6 +83,13 @@ Average Bifurcation Angle Remote:	46.8366
 Hausdorff Dimension:			1.59569
 
 --------------Neuron #3----------------
+compute Feature  
+N_node : 20 
+Soma_surface : 45,364597 
+N_stem : 1 
+f0 : 20,000000 
+f1 : 45,364597 
+f2 : 1,000000 
 Number of Nodes:	20
 Soma Surface:		45.3646
 Number of Stems:	1
@@ -110,6 +112,4 @@ Average Parent-daughter Ratio:		0.975069
 Average Bifurcation Angle Local:	60
 Average Bifurcation Angle Remote:	60
 Hausdorff Dimension:			-nan
- **** the plugin preprocessing takes [ 290  milliseconds] 
 Starting Vaa3D version checker...
-http://home.penglab.com/proj/vaa3d/current_release/vaa3d_version.xml
