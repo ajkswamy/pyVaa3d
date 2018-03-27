@@ -11,12 +11,13 @@ from pyVaa3d.global_neuron_features import writeANOfile, readANOFile, parseOpStr
 import pathlib2 as pl
 from filecmp import cmp
 import pandas as pd
+import platform
 
 
 testFilesPath = pl.Path("tests/global_neuron_feature/testFiles").resolve()
 
 
-def test_writeANOFile():
+def test_rwANOFile():
     """
     Testing the writeANOFile function
     :return:
@@ -32,31 +33,12 @@ def test_writeANOFile():
     outFilePath = testFilesPath / "testOutput.ano"
     if outFilePath.is_file():
         outFilePath.unlink()
-    expectedOutFilePath = testFilesPath / "expectedOutput.ano"
 
     writeANOfile(swcList=swcFilesFull, outFile=str(outFilePath))
 
-    assert cmp(str(outFilePath), str(expectedOutFilePath))
+    readSWCFiles = readANOFile(str(outFilePath))
 
-
-def test_readANOFile():
-    """
-    Testing the readANOFile function
-    :return:
-    """
-
-    swcFiles = [
-        "v_e_purk2.CNG.swc",
-        "v_e_moto1.CNG.swc",
-        "horton-strahler_test_wiki.swc",
-    ]
-    swcFilesFull = [str(testFilesPath / x) for x in swcFiles]
-
-    expectedOutFilePath = testFilesPath / "expectedOutput.ano"
-
-    testSWCFiles = readANOFile(str(expectedOutFilePath))
-
-    assert all([x == y for x, y in zip(testSWCFiles, swcFilesFull)])
+    assert all([x == y for x, y in zip(readSWCFiles, swcFilesFull)])
 
 
 def test_parseOPStr():
@@ -65,7 +47,7 @@ def test_parseOPStr():
     :return:
     """
 
-    testOpStrFilePath = testFilesPath / "testOPStr.txt"
+    testOpStrFilePath = testFilesPath / "testOPStr_{}.txt".format(platform.system())
     expectedOutFilePath = testFilesPath / "expectedOutput.ano"
     expectedOPXL = testFilesPath / "expectedOutputXL.xlsx"
 
