@@ -18,6 +18,8 @@
 `pip install \<path to package\>`
 
 ## 4. Configure Vaa3D binary executable
+Download Vaa3d v3.447 from https://github.com/Vaa3D/release and make sure it is working.
+
 `python -c "import pyVaa3D"`
 
 When asked for, enter the path to the file "start_vaa3d.sh" within Vaa3D Installation folder.
