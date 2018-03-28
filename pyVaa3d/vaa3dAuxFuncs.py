@@ -41,11 +41,10 @@ def askForVaa3dExec():
                                                   "could not be found"
     return vaa3dExecutable
 
+
 def getVaa3DExecutable():
 
-    if platform.system() in ["Linux", "Darwin"]:
-
-        if os.path.exists(linuxConfigFile):
+    if os.path.exists(linuxConfigFile):
             try:
                 with open(linuxConfigFile, 'r') as fle:
                     configDict = json.load(fle)
@@ -65,23 +64,25 @@ def getVaa3DExecutable():
             else:
                 vaa3dExec = configDict["vaa3dExecutable"]
                 checkVaa3dExecutable(vaa3dExec)
-        else:
-            vaa3dExec = askForVaa3dExec()
-            configDict = {"vaa3dExecutable": vaa3dExec}
-            with open(linuxConfigFile, 'w') as fle:
-                print("Adding path of Vaa3D Binary Executable to internal config file")
-
-                json.dump(configDict, fle)
-
     else:
-        raise NotImplementedError
+        vaa3dExec = askForVaa3dExec()
+        configDict = {"vaa3dExecutable": vaa3dExec}
+        with open(linuxConfigFile, 'w') as fle:
+            print("Adding path of Vaa3D Binary Executable to internal config file")
+
+            json.dump(configDict, fle)
+
+
 
     return vaa3dExec
 
 def getVaa3dHelpInternal(vaa3d):
 
     try:
-        completedProcess = subprocess.run([vaa3d, '-h'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if platform.system() == "Windows":
+            completedProcess = subprocess.run([vaa3d, '/h'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        else:
+            completedProcess = subprocess.run([vaa3d, '-h'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     except subprocess.CalledProcessError as cpe:
 
@@ -101,8 +102,13 @@ def getVaa3dPluginHelp(pluginName):
 
     vaa3d = getVaa3DExecutable()
     try:
-        completedProcess = subprocess.run([vaa3d, '-h', '-x', pluginName],
+        if platform.system() == "Windows":
+            completedProcess = subprocess.run([vaa3d, '/h', '/x', pluginName],
                                           stdout=subprocess.PIPE)
+        else:
+            completedProcess = subprocess.run([vaa3d, '-h', '-x', pluginName],
+                                              stdout=subprocess.PIPE)
+
 
     except subprocess.CalledProcessError as cpe:
 

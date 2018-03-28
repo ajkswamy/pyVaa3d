@@ -44,9 +44,14 @@ def runVaa3dPlugin(inFile, pluginName,
 
     virtDisplay = startVirtDisplay()
 
-    toRun = [
-        vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
-    ]
+    if platform.system() == "Windows":
+        toRun = [
+            vaa3dExec, "/i", inFile, "/x", pluginName, "/f", funcName
+        ]
+    else:
+        toRun = [
+            vaa3dExec, "-i", inFile, "-x", pluginName, "-f", funcName
+        ]
     logging.info("[{}] Running {}".format(pluginLabel, toRun))
 
     try:
