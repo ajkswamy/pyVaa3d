@@ -14,8 +14,11 @@
 ### Windows
 `activate pyVaa3d`
 
-## 3. Install package
-`pip install \<path to package\>`
+## 3. Clone and Install package
+### Clone Package
+`git clone https://github.com/dEvasEnApati/pyVaa3d.git`
+### Install package 
+`pip install \<path to cloned pyVaa3d package\>`
 
 ## 4. Configure Vaa3D binary executable
 Download Vaa3d v3.447 from https://github.com/Vaa3D/release and make sure it is working.
@@ -28,6 +31,6 @@ When asked for, enter the path to the file "start_vaa3d.sh" within Vaa3D Install
 
 conda install nose
 
-cd \<path to package\>
+cd \<path to cloned pyVaa3d package\>
 
 nosetests
