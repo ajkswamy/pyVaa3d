@@ -56,7 +56,7 @@ def test_parseOPStr():
     testOPDF = parseOpStr(opStr=testOpStr, inputANOfile=str(expectedOutFilePath))
     testOPDF.index = [pl.Path(x).name for x in testOPDF.index]
     testOPDF.index.name = "SWC File"
-    expectedOPDF = pd.read_excel(expectedOPXL, index_col=0, convert_float=False)
+    expectedOPDF = pd.read_excel(str(expectedOPXL), index_col=0, convert_float=False)
 
     pd.util.testing.assert_frame_equal(testOPDF, expectedOPDF)
 
@@ -79,6 +79,6 @@ def test_getGlobalNeuronFeatures():
     testOPDF = getGlobalNeuronFeatures(swcFilesFull)
     testOPDF.index = [pl.Path(x).name for x in testOPDF.index]
     testOPDF.index.name = "SWC File"
-    expectedOPDF = pd.read_excel(expectedOPXL, index_col=0, convert_float=False)
+    expectedOPDF = pd.read_excel(str(expectedOPXL), index_col=0, convert_float=False)
 
     pd.util.testing.assert_frame_equal(testOPDF, expectedOPDF)

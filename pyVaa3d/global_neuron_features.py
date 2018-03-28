@@ -10,7 +10,7 @@ from .vaa3dWrapper import runVaa3dPlugin
 import pandas as pd
 from io import StringIO
 import tempfile
-import platform
+
 
 
 def writeANOfile(swcList, outFile):
@@ -98,7 +98,7 @@ def getGlobalNeuronFeatures(swcList):
     :return: pd.DataFrame, this data frame has swc files on indices and features on columns
     """
 
-    inANOFile = tempfile.NamedTemporaryFile(suffix=".ano")
+    inANOFile = tempfile.NamedTemporaryFile(suffix=".ano", delete=False)
     writeANOfile(swcList, inANOFile.name)
     opStr = runVaa3dPlugin(inFile=inANOFile.name, pluginName="global_neuron_feature", funcName="compute_feature")
     outDF = parseOpStr(opStr, inputANOfile=inANOFile.name)

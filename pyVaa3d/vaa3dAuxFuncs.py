@@ -19,7 +19,7 @@ def checkVaa3dExecutable(vaa3dExec):
 
     try:
         vaa3dHelpText = getVaa3dHelpInternal(vaa3dExec)
-        vaa3dHelpTextLines = vaa3dHelpText.split("\n")
+        vaa3dHelpTextLines = vaa3dHelpText.splitlines()
         if vaa3dHelpTextLines[3] == \
             "Vaa3D: a 3D image visualization and analysis platform developed by Hanchuan Peng and colleagues.":
             logging.info("Working Vaa3d executable found at {}!".format(vaa3dExec))
