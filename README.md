@@ -8,6 +8,9 @@ Python wrapper for running Vaa3d functions
 4. Linux, MacOS and Windows support 
 5. Unit testing
 
+# Limitations:
+1. Works only with Vaa3d v3.447
+
 # Installation
 See the file INSTALL.md
 

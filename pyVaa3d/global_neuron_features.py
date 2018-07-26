@@ -77,7 +77,7 @@ def parseOpStr(opStr, inputANOfile):
         nrnBuffer.readline()
         nrnBuffer.readline()
 
-        for lneInd in range(22):
+        for lneInd in range(28):
             lne = nrnBuffer.readline().rstrip("\n")
             measureName, valueStr = lne.split(":")
             valueStr = valueStr.replace(",", ".")
